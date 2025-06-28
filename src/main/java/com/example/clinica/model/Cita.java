@@ -3,7 +3,6 @@ package com.example.clinica.model;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @Table(name = "citas")
@@ -11,6 +10,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Cita {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,9 +26,4 @@ public class Cita {
     private Medico medico;
 
     private String estado; // Ej: "Agendada", "Cancelada", "Atendida"
-
-    public void setFechaHora(Date date) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setFechaHora'");
-    }
 }

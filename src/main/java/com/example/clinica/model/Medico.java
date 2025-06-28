@@ -9,6 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Medico {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,15 +20,10 @@ public class Medico {
     private String apellido;
 
     @ManyToOne
-    @JoinColumn(name = "especialidad_id")
+    @JoinColumn(name = "especialidad_id", nullable = false)
     private Especialidad especialidad;
 
     private String telefono;
 
     private String email;
-
-    public void setEspecialidad(String diseaseName) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setEspecialidad'");
-    }
 }

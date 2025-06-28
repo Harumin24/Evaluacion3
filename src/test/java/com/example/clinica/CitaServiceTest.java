@@ -4,6 +4,8 @@ import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.example.clinica.model.Cita;
+import com.example.clinica.model.Paciente;
+import com.example.clinica.model.Medico;
 import com.example.clinica.repository.CitaRepository;
 import com.example.clinica.service.CitaService;
 
@@ -13,9 +15,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.Date;
 
 @ExtendWith(MockitoExtension.class)
 public class CitaServiceTest {
@@ -26,12 +28,27 @@ public class CitaServiceTest {
     @Mock
     private CitaRepository citaRepository;
 
-    @Test
-    public void testFindAll() {
+    private Cita buildCitaMock() {
+        Paciente paciente = new Paciente();
+        paciente.setId(1L);
+        paciente.setNombre("Juan");
+
+        Medico medico = new Medico();
+        medico.setId(1L);
+        medico.setNombre("Dra. Ana");
+
         Cita cita = new Cita();
         cita.setId(1L);
-        cita.setFechaHora(new Date());
-        // Puedes agregar más atributos si existen
+        cita.setFechaHora(LocalDateTime.now());
+        cita.setPaciente(paciente);
+        cita.setMedico(medico);
+
+        return cita;
+    }
+
+    @Test
+    public void testFindAll() {
+        Cita cita = buildCitaMock();
 
         when(citaRepository.findAll()).thenReturn(List.of(cita));
 
@@ -39,15 +56,13 @@ public class CitaServiceTest {
 
         assertNotNull(citas);
         assertEquals(1, citas.size());
-        assertEquals(1, citas.get(0).getId());
+        assertEquals(1L, citas.get(0).getId());
     }
 
     @Test
     public void testFindById() {
         Long id = 1L;
-        Cita cita = new Cita();
-        cita.setId(id);
-        cita.setFechaHora(new Date());
+        Cita cita = buildCitaMock();
 
         when(citaRepository.findById(id)).thenReturn(Optional.of(cita));
 
@@ -55,19 +70,18 @@ public class CitaServiceTest {
 
         assertNotNull(found);
         assertEquals(id, found.getId());
+        assertEquals("Juan", found.getPaciente().getNombre());
     }
 
     @Test
     public void testSave() {
-        Cita cita = new Cita();
-        cita.setId(1L);
-        cita.setFechaHora(new Date());
+        Cita cita = buildCitaMock();
 
         when(citaRepository.save(cita)).thenReturn(cita);
 
         Cita saved = citaService.save(cita);
 
         assertNotNull(saved);
-        assertEquals(1, saved.getId());
+        assertEquals("Dra. Ana", saved.getMedico().getNombre());
     }
 }

@@ -53,6 +53,17 @@ public class EspecialidadServiceTest {
 
         assertNotNull(found);
         assertEquals(id, found.getId());
+        assertEquals("Cardiología", found.getNombre());
+    }
+
+    @Test
+    public void testFindByIdNotFound() {
+        Long id = 99L;
+        when(especialidadRepository.findById(id)).thenReturn(Optional.empty());
+
+        Especialidad found = especialidadService.findById(id);
+
+        assertNull(found);
     }
 
     @Test
